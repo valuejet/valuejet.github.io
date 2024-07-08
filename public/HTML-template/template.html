@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>E-TICKET</title>
+    <style>
+      *,
+      *:before,
+      *:after {
+        margin: 0px;
+        box-sizing: border-box;
+      }
+
+      #ticket-container {
+        display: grid;
+        width: 100%;
+        justify-content: center;
+        padding-bottom: 10vh;
+      }
+
+      #ticket-inner {
+        width: 960px;
+        max-width: 960px;
+        padding: 5rem;
+      }
+
+      #ticket-header {
+        margin-bottom: 1rem;
+      }
+
+      .vertical-padding {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+
+      .w-full {
+        width: 100%;
+      }
+
+      .flex {
+        display: flex;
+      }
+
+      .flex-col {
+        flex-direction: column;
+      }
+
+      .flex-row {
+        flex-direction: row;
+      }
+
+      .grid {
+        display: grid;
+      }
+
+      .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .justify-between {
+        justify-content: space-between;
+      }
+
+      .items-center {
+        align-items: center;
+      }
+
+      .list-none {
+        padding: 0px;
+        list-style-type: none;
+      }
+
+      .logo {
+        width: 200px;
+        height: 100px;
+      }
+
+      .top-text {
+        text-align: right;
+      }
+
+      table {
+        max-width: 100%;
+      }
+
+      th {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        background-color: #5e1b4e;
+        color: white;
+      }
+
+      #fare-info-header {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        background-color: #5e1b4e;
+        color: white;
+      }
+
+      .mb-1 {
+        margin-bottom: 1rem;
+      }
+
+      .overflow-x-scroll {
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ticket-container">
+      <section id="ticket-inner">
+        <section id="ticket-header">
+          <div class="flex justify-between">
+            <img
+              src="https://res.cloudinary.com/valuejet/image/upload/v1680532089/logo_cgs61t.svg"
+              alt="Logo"
+              class="logo"
+            />
+            <p class="top-text flex items-center">Your E-ticket Receipt and Flight Itinerary</p>
+          </div>
+        </section>
+        <section id="ticket-body">
+          <hr />
+
+          <p class="vertical-padding">
+            <strong>IMPORTANT NOTICE: </strong>
+            Your electronic ticket forms an integral part of the contract of carriage and serves as a record of your
+            flight itinerary and other related information pertaining to the fare basis paid. It is advisable to have a
+            copy of your e-ticket readily available for presentation on request.
+
+            <br />
+
+            The contract of carriage is available online by visiting
+            <a href="https://flyvaluejet.com">www.flyvaluejet.com</a>
+            e-tickets are non-transferable from one passenger to another and are only valid for travel on ValueJet
+            flights.
+          </p>
+
+          <hr />
+
+          <div class="vertical-padding">
+            <ul class="list-none">
+              <li>
+                <p class="grid grid-cols-2 justify-between">
+                  <span>PASSENGER NAME</span>
+                  <span>{{kiu.passenger.title}} {{kiu.passenger.name}} {{kiu.passenger.surname}}</span>
+                </p>
+              </li>
+              <li>
+                <p class="grid grid-cols-2 justify-between">
+                  <span>TICKET NUMBER</span>
+                  <span>{{kiu.ticket.number}}</span>
+                </p>
+              </li>
+              <li>
+                <p class="grid grid-cols-2 justify-between">
+                  <span>BOOKING REF</span>
+                  <span>{{kiu.booking.reference_id}}</span>
+                </p>
+              </li>
+              <li>
+                <p class="grid grid-cols-2 justify-between">
+                  <span>ISSUED BY</span>
+                  <span>Internet</span>
+                </p>
+              </li>
+            </ul>
+          </div>
+
+          <hr />
+
+          <div class="vertical-padding w-full overflow-x-scroll">
+            <table class="w-full">
+              <thead>
+                <tr>
+                  <th>S/No</th>
+                  <th>Flight No</th>
+                  <th>Route</th>
+                  <th>Class</th>
+                  <th>Date</th>
+                  <th>Dep. time</th>
+                  <th>Arr. time</th>
+                  <th>Baggage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>{{kiu.flight_reference.marketing_airline}}{{kiu.flight_reference.flight_number}}</td>
+                  <td>{{kiu.flight_reference.departure_airport}} -> {{kiu.flight_reference.arrival_airport}}</td>
+                  <td>{{kiu.flight_reference.res_book_desig_code}}</td>
+                  <td>{{kiu.flight_reference.departure_date}}</td>
+                  <td>{{kiu.flight_reference.departure_time}}</td>
+                  <td>{{kiu.flight_reference.arrival_time}}</td>
+                  <td>{{kiu.flight_reference.baggage_allow}}{{kiu.flight_reference.unit_of_measure}}</td>
+                </tr>
+                <tr></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr />
+
+          <div class="mb-1">
+            <div class="vertical-padding">
+              <p id="fare-info-header">FARE INFORMATION</p>
+            </div>
+            <div>
+              <p class="flex justify-between">
+                <span>Base Fare</span>
+                <span>{{kiu.fare.base_currency_code}}{{kiu.fare.base_amount}}</span>
+              </p>
+              <p class="flex justify-between">
+                <span>Tax</span>
+                <span>{{kiu.fare.total_currency_code}}{{kiu.tax.total}}</span>
+              </p>
+              <p class="flex justify-between">
+                <span>Surcharge</span>
+                <span>{{kiu.fee.currency_code}}{{kiu.fee.total_amount}}</span>
+              </p>
+              <p class="flex justify-between">
+                <span>Total</span>
+                <span>{{kiu.fare.total_currency_code}}{{kiu.fare.total_amount}}</span>
+              </p>
+            </div>
+          </div>
+
+          <hr />
+
+          <div class="vertical-padding">
+            <p>ENDORSEMENT: {{kiu.endorsement.info}}</p>
+          </div>
+
+          <hr />
+
+          <div class="vertical-padding">
+            <p>
+              The terms and conditions of your e-ticket varies according to the fare basis applicable to base fare paid.
+              The different booking classes are grouped in fare families with different penalties and fees applicable.
+
+              <br />
+              <br />
+
+              Passengers are advised to cancel their unwanted confirmed flight reservations at least three (3) hours
+              before the departure of the scheduled flight. Failing to do so will incur a no-show penalty of 25,000
+              naira. Alternatively, confirmed flight reservations may be cancelled for use at a later date.
+
+              <br />
+              <br />
+
+              Passengers are advised that some fare bases will incur a refund penalty of 4000 naira, while others allow
+              for refunds without penalty or are non-refundable. Passengers are advised that some fare bases will incur
+              a date change penalty of 3000 naira, while others allow for free date change.
+
+              <!-- <br/>
+                            <br/>
+
+                            ValueLite and ValueSaver tickets come with only 7kg hand luggage and no checked baggage included.
+                            While they have the choice of without checked baggage at a lower fare, they can include 23kg checked
+                            baggage at a cost, while ValueXtra and ValuePlus have 1 piece of 23kg checked baggage each included. -->
+
+              <br />
+              <br />
+
+              The Premium class Passengers are advised that the tickets are non-transferable, valid on VK flights on,
+              NGN5000 no-show fee applies, free date change; and the tickets are fully refundable.
+              <br />
+              <br />
+
+              Check-in counters open three (3) hours before the scheduled departure of the flight and closes 30 minutes
+              before the departure.
+
+              <br />
+              <br />
+
+              Note: All Lagos flight departures for Premium passengers depart from the new MMA2 Premium departure lounge
+              situated at the right-hand side of the MMA2 departure terminal.
+
+              <br />
+              <br />
+
+              Thank you for choosing ValueJet!
+            </p>
+          </div>
+        </section>
+        <section id="ticket-footer"></section>
+      </section>
+    </div>
+  </body>
+</html>
